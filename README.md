@@ -1,1 +1,1 @@
-# trade-tracker
+# Trade Tracker
