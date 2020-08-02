@@ -1,6 +1,7 @@
 import pandas as pd
 
 df = pd.read_csv('/trade-tracker/trading_data.csv')
+df = pd.read_excel('/trade-tracker/trading_data.csv')
 
 tickers = ['CODX', 'AMZN', 'SRNE']
 
@@ -32,14 +33,18 @@ df.sort_values(by=['PRICE', 'VOLUME'], ascending='True')
 df.nlargest(10, 'PRICE')
 
 # locating specific targets
-df.loc[2, ['TICKER', 'DATE']] = ['CODX', '20-Jul'] 
+df.loc[2, ['TICKER', 'DATE']] = ['CODX', '00-Jul'] 
 print(df[filt])
 
 # alternative way to express
 print(df.loc[high_profit, ['NET_PROFIT', 'PRICE', 'BUY/SELL']])
-
 print(df.loc[filt_2, ['DATE', 'PRICE']])
 print(df.loc[filt_3])
+
+# export to excel
+df.to_excel('/trade-tracker/trading_data.xlsx')
+print(df)
+
 
 
  
