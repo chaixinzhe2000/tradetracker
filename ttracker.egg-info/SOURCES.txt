@@ -1,0 +1,7 @@
+README.md
+setup.py
+ttracker.egg-info/PKG-INFO
+ttracker.egg-info/SOURCES.txt
+ttracker.egg-info/dependency_links.txt
+ttracker.egg-info/entry_points.txt
+ttracker.egg-info/top_level.txt
