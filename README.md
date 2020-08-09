@@ -12,12 +12,16 @@ Trade Tracker is a simple command line interface that helps users to log and ana
 The logging function (along with data validation) is completed. The next step is to write the data into the excel file.
 
 ## How to Use this Tool
-### Making it executable
+### Getting Started
 First, clone this repository to your local computer:
 ```
 git clone https://github.com/chaixinzhe2000/trade-tracker.git
 ```
-Second, make it a Python executable:
+Second, make it a Python executable (you will need Python 3.x and pip installed):
 ```
 pip install -e /path/to/script/folder
+```
+The tool should be able to run by now, by the command below:
+```
+trade -h
 ```
