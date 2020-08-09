@@ -6,7 +6,7 @@
 ![GitHub forks](https://img.shields.io/github/forks/chaixinzhe2000/trade-tracker?style=social)
 
 ## Description
-Trade Tracker is a simple command line interface that helps users to log and analyse their tradings. The motivation of building this tool derives from my wish to see the realized profits (or sometimes losses) after I execute a SELL order. The broker that I currently use, Robinhood, does not support this feature.
+Trade Tracker is a simple command line interface that helps users to log and analyse their tradings. The motivation of building this tool derives from my own wish to see my realized profits (or sometimes losses) after I execute a SELL order. The broker that I currently use, Robinhood, does not support this feature.
 
 ## Progress
 The logging function (along with data validation) is completed. The next step is to write the data into the excel file.
