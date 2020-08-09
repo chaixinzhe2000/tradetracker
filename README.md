@@ -21,7 +21,7 @@ Second, make it a Python executable (you will need Python 3.x and pip installed)
 ```
 pip install -e /path/to/script/folder
 ```
-The tool should be able to run by now, by the command below:
+The tool should be able to run by now, by typing the command below:
 ```
 trade -h
 ```
