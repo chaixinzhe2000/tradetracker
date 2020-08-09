@@ -1,11 +1,11 @@
 from setuptools import setup
 
 setup(
-    name='ttracker',
-    version='0.0.3',
+    name='tradetracker',
+    version='0.1.0',
     entry_points={
         'console_scripts': [
-            'trackr=tracker:main'
+            'trade=main:main'
         ]
     }
 )

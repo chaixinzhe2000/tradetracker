@@ -1,4 +1,14 @@
 import yfinance as yf
+import datetime
+import urllib.request
+
+# checking internet connection
+def connect(host='https://google.com'):
+    try:
+        urllib.request.urlopen(host)
+        return True
+    except:
+        return False
 
 # this python file implements the log command of the tracker
 def new_entry():
@@ -9,7 +19,7 @@ def new_entry():
     while entry_correct is False:
         # finished validation
         ticker = input(
-            'Enter stock symbol of your trade (eg. MSFT): ').upper() or ticker
+            'Enter stock symbol of your trade: ').upper() or ticker
         ticker = check_ticker_input(ticker)
         # finished type checking
         trade_type = input(
@@ -23,9 +33,10 @@ def new_entry():
         quantity = input(
             'Enter the quantity of the trade, in shares: ') or quantity
         quantity = check_quantity_input(quantity)
-        # need to check input type
+        # finished type checking
         date = input(
             "Enter the date of trade in MM/DD/YY format: ") or date
+        date = check_date(date)
             
         # order summary
         print('----------------------------------------------------------------------------')
@@ -44,14 +55,19 @@ def new_entry():
             print("\nLet's do this again. You can press ENTER to skip those correct entries.")
             print('----------------------------------------------------------------------------')
 
+# when connected to internet, will check ticker validity
 def check_ticker_input(ticker):
-    print('Checking ticker validity...     ', end="", flush=True)
-    while len(ticker) < 1 or len(ticker) > 10 or check_validity(ticker) is False:
-        print('[INVALID]')
-        ticker = input('Please re-enter a valid stock symbol (eg. MSFT): ').upper()
+    if connect():
         print('Checking ticker validity...     ', end="", flush=True)
-        check_validity(ticker)
-    print('[VALID]')
+        while len(ticker) < 1 or len(ticker) > 10 or check_validity(ticker) is False:
+            print('[INVALID]')
+            ticker = input('Please re-enter a valid stock symbol: ').upper()
+            print('Checking ticker validity...     ', end="", flush=True)
+            check_validity(ticker)
+        print('[VALID]')
+    else:
+        while len(ticker) < 1 or len(ticker) > 10:
+            ticker = input('Please re-enter a valid stock symbol: ').upper()
     return ticker
 
 def check_validity(ticker):
@@ -76,8 +92,8 @@ def check_price_input(number):
         price = input(
             'Please re-enter a valid execution price of the trade, in dollars: ')
         number = price
+    number = round(float(number), 2)
     return number
-        
 
 def check_quantity_input(number):
     while check_float(number) is False:
@@ -85,6 +101,17 @@ def check_quantity_input(number):
             'Please re-enter a valid quantity of the trade, in shares: ')
         number = quantity
     return number
+
+def check_date(date):
+    date_correct = False
+    while (date_correct is False):
+        try:
+            datetime.datetime.strptime(date, '%m/%d/%y')
+        except ValueError:
+            date = input('Please re-enter a valid date of trade, in MM/DD/YY format: ')
+        else:
+            date_correct = True
+    return date
 
 def check_float(number):
     try:  
