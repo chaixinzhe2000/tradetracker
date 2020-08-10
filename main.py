@@ -2,7 +2,7 @@ import argparse
 import datetime
 import pandas as pd
 from argparse import RawDescriptionHelpFormatter
-from log import new_entry
+from collect import new_entry
 
 def main():
     # description of the command-line interface
