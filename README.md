@@ -24,6 +24,7 @@ following commands)
 pip install -e /path/to/script/folder
 pip install yfinance
 pip install lxml
+pip install pandas
 ```
 The tool should be able to run by now, by typing the command below:
 ```
