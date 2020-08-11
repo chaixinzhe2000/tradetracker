@@ -4,11 +4,13 @@ import urllib.request
 from log import log_to_excel
 
 # checking internet connection
-def connect(host='https://google.com'):
+def connect(host="https://www.google.com/"):
     try:
         urllib.request.urlopen(host)
+        print("Connected to internet")
         return True
     except:
+        print("Failed to connect to internet")
         return False
 
 # this python file implements the log command of the tracker
@@ -24,7 +26,7 @@ def new_entry():
         ticker = check_ticker_input(ticker)
         # finished type checking
         trade_type = input(
-            'Enter type of the trade ("buy" or "sell"): ').upper() or trade_type
+            'Enter type of trade ("buy" or "sell"): ').upper() or trade_type
         trade_type = check_type_input(trade_type)
         # need to convert to certain float
         price = input(
@@ -65,7 +67,6 @@ def check_ticker_input(ticker):
             print('[INVALID]')
             ticker = input('Please re-enter a valid stock symbol: ').upper()
             print('Checking ticker validity...     ', end="", flush=True)
-            check_validity(ticker)
         print('[VALID]')
     else:
         while len(ticker) < 1 or len(ticker) > 10:
