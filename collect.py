@@ -7,10 +7,10 @@ from log import log_to_excel
 def connect(host="https://www.google.com/"):
     try:
         urllib.request.urlopen(host)
-        print("Connected to internet")
+        # print("Connected to internet")
         return True
     except:
-        print("Failed to connect to internet")
+        # print("Failed to connect to internet")
         return False
 
 # this python file implements the log command of the tracker
