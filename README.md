@@ -19,12 +19,12 @@ git clone https://github.com/chaixinzhe2000/trade-tracker.git
 ```
 Second, make it a Python executable (you will need Python 3.x and pip installed):
 ```
-(note: mac users will need to use pip3 so instead of 'pip', type 'pip3' for the
-following commands)
+(note: if you have both python 2.x and 3.x on your computer, please use 'pip3' to insure the correct installation of the following)
 pip install -e /path/to/script/folder
 pip install yfinance
 pip install lxml
 pip install pandas
+pip install xlrd
 ```
 The tool should be able to run by now, by typing the command below:
 ```

@@ -28,7 +28,7 @@ Available commands include:\n\
     if arg_command == 'log':
         new_entry()
     elif arg_command == 'delete':
-        print('feature awaiting implementation')
+        print('delete feature awaiting implementation')
     elif arg_command == 'profit':
         print('profit feature awaiting implementation')
 
