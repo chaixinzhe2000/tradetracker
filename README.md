@@ -25,6 +25,7 @@ pip install yfinance
 pip install lxml
 pip install pandas
 pip install xlrd
+pip install openpyxl
 ```
 The tool should be able to run by now, by typing the command below:
 ```
