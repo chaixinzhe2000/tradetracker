@@ -7,9 +7,11 @@ def log_to_excel(ticker, trade_type, price, quantity, date):
     net_effect = calc_net_effect(trade_type, price, quantity)
     data = [ticker, date, trade_type, price, \
             quantity, net_effect, None, None, None, None]
-    data_to_log = pd.DataFrame([data], columns=['TICKER', 'DATE', 'BUY/SELL', 'PRICE', 'VOLUME',
+    data_to_log = pd.DataFrame([data], columns=['TICKER', 'DATE', 'BUY/SELL', 'PRICE', 'VOLUME', \
                                                 'NET_EFFECT_TO_CASH', 'TOTAL_SHARES_HOLDING', 'TICKER_TOTAL_VALUE', 'AVERAGE_PRICE', 'REALIZED_PROFIT'])
     df = df.append(data_to_log, ignore_index=True)
+    numerical_columns = ['PRICE', 'VOLUME', 'NET_EFFECT_TO_CASH', 'TOTAL_SHARES_HOLDING', 'TICKER_TOTAL_VALUE', 'AVERAGE_PRICE', 'REALIZED_PROFIT']
+    df[numerical_columns] = df[numerical_columns].apply(pd.to_numeric, errors='coerce')
     df.to_excel(excel_file, index=False)
     print(df)
 
