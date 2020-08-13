@@ -103,7 +103,7 @@ def check_quantity_input(number):
         quantity = input(
             'Please re-enter a valid quantity of the trade, in shares: ')
         number = quantity
-    return number
+    return float(number)
 
 def check_date(date):
     date_correct = False
