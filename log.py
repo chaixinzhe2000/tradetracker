@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 
+# BUG: can sell when does not hold position (maybe we need a short version)
+
 def log_to_excel(ticker, trade_type, price, quantity, date):
     excel_file = './trading_data.xlsx'
     df = pd.read_excel(excel_file)
@@ -64,4 +66,3 @@ def calc_ticker_total_value(df, ticker_symbol, trade_type, price, quantity, tota
             current_average = previous_average
         return current_value, current_average
 
-    ###WE WANT CUMULATIVE AND USE INDEX MASKING TO FIND LATEST

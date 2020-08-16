@@ -8,10 +8,10 @@ def main():
     # description of the command-line interface
     description = '\
 This is a command-line interface (CLI) tool that helps you track your most recent stock trades.\n\
-Copyright (c) 2020 Xinzhe Chai (https://xchai.me)\n\n\
+Copyright (c) 2020 Xinzhe Chai & Jinoo Hong\n\n\
 Available commands include:\n\
   new       Enter new trade data\n\
-  delete    Enter old trade data, including chai'
+  profit    Check profit for individual ticker'
 
     # getting current date
     curr_date = datetime.datetime.now().strftime("%x")
@@ -20,15 +20,13 @@ Available commands include:\n\
     parser = argparse.ArgumentParser(
         description=description, formatter_class=RawDescriptionHelpFormatter)
     parser.add_argument('command', type=str,
-                        help='choose from list of commands', choices=['log', 'delete', 'profit'])
+                        help='choose from list of commands', choices=['log', 'profit'])
     args = parser.parse_args()
 
     # deciding command from command line arguments
     arg_command = args.command
     if arg_command == 'log':
         new_entry()
-    elif arg_command == 'delete':
-        print('delete feature awaiting implementation')
     elif arg_command == 'profit':
         print('profit feature awaiting implementation')
 

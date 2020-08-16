@@ -3,58 +3,70 @@ import datetime
 import urllib.request
 from log import log_to_excel
 
+# TODO: make sure rounding is exact
+
+# this python file aims to collect the trade information from the users, and
+# utilizes log.py to log the relavent data to trading_data.xlsx
+
 # checking internet connection
 def connect(host="https://www.google.com/"):
     try:
         urllib.request.urlopen(host)
-        # print("Connected to internet")
         return True
     except:
-        # print("Failed to connect to internet")
         return False
 
-# this python file implements the log command of the tracker
+
+# driver function: the new_entry() method will prompt users to enter their trade information,
+# and check whether the input is valid or not by calling helper functions.
 def new_entry():
     entry_correct = False
     ticker, trade_type, price, quantity, date = None, None, None, None, datetime.datetime.now().strftime("%x")
     print("Please enter the trade you wish to record")
 
     while entry_correct is False:
-        # finished validation
+        # collecting ticker information
         ticker = input(
             'Enter stock symbol of your trade: ').upper() or ticker
         ticker = check_ticker_input(ticker)
-        # finished type checking
+        # collecting trade type (buy or sell)
         trade_type = input(
             'Enter type of trade ("buy" or "sell"): ').upper() or trade_type
         trade_type = check_type_input(trade_type)
-        # need to convert to certain float
+        # collecting trade price information
         price = input(
             'Enter execution price of the trade, in dollars: ') or price
         price = check_price_input(price)
-        # finished type checking
+        # collecting trade quantity
         quantity = input(
             'Enter the quantity of the trade, in shares: ') or quantity
         quantity = check_quantity_input(quantity)
-        # finished type checking
+        # collecting trade date
         date = input(
-            "Enter the date of trade in MM/DD/YY format: ") or date
+            "Enter the date of trade in MM/DD/YY format, press ENTER to use current date: ") or date
         date = check_date(date)
             
-        # order summary
+        # printing order summary
         print('----------------------------------------------------------------------------')
         print('You have excecuted the following order: ' + trade_type +
               ' ' + str(quantity) + ' ' + ticker + ' @ ' + str(price) + ' on ' + date)
         print('----------------------------------------------------------------------------')
+        # confirming trade with user
         entry_confirmation = input("is the information correct? (y/n): ")
         if (entry_confirmation == 'y') or (entry_confirmation == 'Y'):
-            entry_correct = True
-            # add data into the excel
+            # writing trade data to excel by calling helper function
             print('\nWriting to trading_data.xlsx...')
             log_to_excel(ticker,trade_type,price,quantity,date)
             print('\nOrder "' + trade_type +
                   ' ' + str(quantity) + ' ' + ticker + ' @ ' + str(price) + ' on ' + date + '" is recorded in trading_data.xlsx')
-            print("Thank you for using Stock Tracker. Good luck on your next trade.")
+            another_trade = input("Do you want to log another trade? (y/n): ")
+            if another_trade == 'y' or another_trade == 'Y':
+                print("\nStart logging the next trade...")
+                # reinitializing the input data
+                ticker, trade_type, price, quantity, date = None, None, None, None, datetime.datetime.now().strftime("%x")
+            else:
+                entry_correct = True
+                print("Thank you for using Stock Tracker. Good luck on your next trade.")
         else:
             print("\nLet's do this again. You can press ENTER to skip those correct entries.")
             print('----------------------------------------------------------------------------')
@@ -73,6 +85,7 @@ def check_ticker_input(ticker):
             ticker = input('Please re-enter a valid stock symbol: ').upper()
     return ticker
 
+# using yfinance module to check whether the ticker is valid
 def check_validity(ticker):
     ticker_validity = True
     try:
@@ -85,11 +98,13 @@ def check_validity(ticker):
         ticker_validity = False
     return ticker_validity
 
+# type checking the trade type
 def check_type_input(trade_type):
     while (trade_type != 'BUY') and (trade_type != 'SELL'):
         trade_type = input('Please re-enter type of the trade, using "buy" or "sell": ').upper()
     return trade_type
 
+# checking whether price is valid, and round it to 2 decimal places
 def check_price_input(number):
     while check_float(number) is False:
         price = input(
@@ -98,6 +113,7 @@ def check_price_input(number):
     number = round(float(number), 2)
     return number
 
+# checking whether quantity is valid, and round it to 2 decimal places
 def check_quantity_input(number):
     while check_float(number) is False:
         quantity = input(
@@ -105,6 +121,7 @@ def check_quantity_input(number):
         number = quantity
     return float(number)
 
+# checking whether date follows the format
 def check_date(date):
     date_correct = False
     # need to handle just pressing enter
@@ -117,6 +134,7 @@ def check_date(date):
             date_correct = True
     return date
 
+# helper function for checking number validity
 def check_float(number):
     try:  
         float(number)
