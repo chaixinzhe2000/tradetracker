@@ -12,9 +12,10 @@ def log_to_excel(ticker, trade_type, price, quantity, date):
 
     net_effect = calc_net_effect(trade_type, price, quantity)
     total_shares_holding = calc_total_shares_holding(df,ticker,trade_type,quantity)
-    ticker_total_value, ticker_average = calc_ticker_total_value(df,ticker,trade_type,price,quantity,total_shares_holding)
+    ticker_total_value, ticker_average = calc_ticker_values(df,ticker,trade_type,price,quantity,total_shares_holding)
+    realized_profit = calc_realized_profit(df, ticker, trade_type, total_shares_holding, price, quantity)
     data = [ticker, date, trade_type, price, \
-            quantity, net_effect, total_shares_holding, ticker_total_value, ticker_average, None]
+            quantity, net_effect, total_shares_holding, ticker_total_value, ticker_average, realized_profit]
     data_to_log = pd.DataFrame([data], columns=['TICKER', 'DATE', 'BUY/SELL', 'PRICE', 'VOLUME', \
                                                 'NET_EFFECT_TO_CASH', 'TOTAL_SHARES_HOLDING', 'TICKER_TOTAL_VALUE', 'AVERAGE_PRICE', 'REALIZED_PROFIT'])
     df = df.append(data_to_log, ignore_index=True)
@@ -47,7 +48,7 @@ def calc_total_shares_holding(df, ticker_symbol, trade_type, quantity):
             current_shares = previous_shares - quantity
         return current_shares
 
-def calc_ticker_total_value(df, ticker_symbol, trade_type, price, quantity, total_share_quantity):
+def calc_ticker_values(df, ticker_symbol, trade_type, price, quantity, total_share_quantity):
     previous_value = 0
     for row in df.iterrows():
         # optional performance consideration: this would be slower when we have large amount of data, but a good approach indeed.
@@ -58,11 +59,21 @@ def calc_ticker_total_value(df, ticker_symbol, trade_type, price, quantity, tota
         return np.round(price * quantity, 2), price
     else:
         # need to add a SHORT version, and check validity
+        print(previous_average)
         if trade_type == 'BUY':
             current_value = previous_value + price * quantity
             current_average = np.round(current_value / total_share_quantity, 2)
         else:
             current_value = previous_value - previous_average * quantity
-            current_average = previous_average
+            current_average = 0 if total_share_quantity == 0 else previous_average
         return current_value, current_average
 
+def calc_realized_profit(df, ticker_symbol, trade_type, total_shares_holding, price, quantity):
+    if trade_type == 'BUY':
+        return None
+    else: 
+        for row in df.iterrows():
+            if row[1]['TICKER'] == ticker_symbol:
+                previous_average_buy_cost = row[1]['AVERAGE_PRICE']
+        return (price-previous_average_buy_cost)*quantity
+                
