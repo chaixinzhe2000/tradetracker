@@ -1,13 +1,10 @@
 import pandas as pd
 import numpy as np
+import interface_with_excel as iwe
 
 def show_trades():
     #this function prints the latest trades from each of the tickers that we currently hold shares of
-    excel_file = './trading_data.xlsx'
-    df = pd.read_excel(excel_file)
-
-    numerical_columns = ['PRICE', 'VOLUME', 'NET_EFFECT_TO_CASH', 'TOTAL_SHARES_HOLDING', 'TICKER_TOTAL_VALUE', 'AVERAGE_PRICE', 'REALIZED_PROFIT']
-    df[numerical_columns] = df[numerical_columns].apply(pd.to_numeric, errors='coerce')
+    df = iwe.get_df()
 
     #make a dictionary of all the tickers we have: (key is ticker name and value is their trade row) (if key is same, value is overwritten so we go from oldest to newest trades)
     dict_of_trades = dict()
