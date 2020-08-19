@@ -3,6 +3,7 @@ import datetime
 import pandas as pd
 from argparse import RawDescriptionHelpFormatter
 from collect import new_entry
+from show import show_trades
 
 def main():
     # description of the command-line interface
@@ -20,7 +21,7 @@ Available commands include:\n\
     parser = argparse.ArgumentParser(
         description=description, formatter_class=RawDescriptionHelpFormatter)
     parser.add_argument('command', type=str,
-                        help='choose from list of commands', choices=['log', 'profit'])
+                        help='choose from list of commands', choices=['log', 'profit', 'show'])
     args = parser.parse_args()
 
     # deciding command from command line arguments
@@ -29,6 +30,8 @@ Available commands include:\n\
         new_entry()
     elif arg_command == 'profit':
         print('profit feature awaiting implementation')
+    elif arg_command == 'show':
+        show_trades()
 
 if __name__ == "__main__":
     main()
