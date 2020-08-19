@@ -87,6 +87,7 @@ def check_ticker_input(ticker):
 
 # using yfinance module to check whether the ticker is valid
 def check_validity(ticker):
+    ###### WE STILL HAVE A BUG WHERE TICKERS LIKE SRNE OR UAL ARE NOT VALID
     ticker_validity = True
     try:
         yf.Ticker(ticker).info
