@@ -12,7 +12,10 @@ def show_trades():
     #make a dictionary of all the tickers we have: (key is ticker name and value is their trade row) (if key is same, value is overwritten so we go from oldest to newest trades)
     dict_of_trades = dict()
     for row in df.iterrows():
-        dict_of_trades[row[1]['TICKER']] = row[1]
+        if row[1]['TOTAL_SHARES_HOLDING'] == 0:
+            dict_of_trades.pop(row[1]['TICKER'],None)
+        else:
+            dict_of_trades[row[1]['TICKER']] = row[1]
 
     #put these dictionary values into a datafram so we can output in the appropriate format (rows are trades and columns are trade details)
     new_df_to_print = pd.DataFrame(dict_of_trades.values(), columns=['TICKER', 'DATE', 'BUY/SELL', 'PRICE', 'VOLUME', \
