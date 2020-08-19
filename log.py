@@ -1,14 +1,11 @@
 import pandas as pd
 import numpy as np
+import interface_with_excel as iwe
 
 # BUG: can sell when does not hold position (maybe we need a short version)
 
 def log_to_excel(ticker, trade_type, price, quantity, date):
-    excel_file = './trading_data.xlsx'
-    df = pd.read_excel(excel_file)
-
-    numerical_columns = ['PRICE', 'VOLUME', 'NET_EFFECT_TO_CASH', 'TOTAL_SHARES_HOLDING', 'TICKER_TOTAL_VALUE', 'AVERAGE_PRICE', 'REALIZED_PROFIT']
-    df[numerical_columns] = df[numerical_columns].apply(pd.to_numeric, errors='coerce')
+    df = iwe.get_df()
 
     net_effect = calc_net_effect(trade_type, price, quantity)
     total_shares_holding = calc_total_shares_holding(df,ticker,trade_type,quantity)
@@ -22,7 +19,7 @@ def log_to_excel(ticker, trade_type, price, quantity, date):
     numerical_columns = ['PRICE', 'VOLUME', 'NET_EFFECT_TO_CASH', 'TOTAL_SHARES_HOLDING', 'TICKER_TOTAL_VALUE', 'AVERAGE_PRICE', 'REALIZED_PROFIT']
     df[numerical_columns] = df[numerical_columns].apply(pd.to_numeric, errors='coerce')
     ###TRY TO GET ALL COLUMNS INTO 2 DECIMAL PLACES WHEN TALKING ABOUT CURRENCY
-    df.to_excel(excel_file, index=False)
+    df.to_excel(iwe.excel_file_name, index=False)
     print(df)
 
 def calc_net_effect(trade_type, price, quantity):
