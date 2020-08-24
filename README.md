@@ -17,7 +17,7 @@ First, clone this repository to your local computer:
 ```
 git clone https://github.com/chaixinzhe2000/trade-tracker.git
 ```
-Second, make it a Python executable (you will need Python 3.x and pip installed)
+Second, make it a Python executable (you will need Python 3.x and pip installed). In this step, you need to find the absolute path to the CLI tool, and replace the `/path/to/script/folder` in the following command.
 
 Note: if you have both python 2.x and 3.x on your computer, please use `pip3` instead of `pip` to ensure the correct installation:
 ```
@@ -27,7 +27,7 @@ At last, install the dependencies:
 ```
 pip install -r requirements.txt
 ```
-The tool should be able to run by now, by typing the command below:
+The tool should be able to run by now, try typing the command below:
 ```
 trade -h
 ```
