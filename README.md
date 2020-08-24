@@ -17,17 +17,18 @@ First, clone this repository to your local computer:
 ```
 git clone https://github.com/chaixinzhe2000/trade-tracker.git
 ```
-Second, make it a Python executable (you will need Python 3.x and pip installed):
+Second, make it a Python executable (you will need Python 3.x and pip installed)
+
+Note: if you have both python 2.x and 3.x on your computer, please use `pip3` instead of `pip` to ensure the correct installation:
 ```
-(note: if you have both python 2.x and 3.x on your computer, please use 'pip3' to insure the correct installation of the following)
 pip install -e /path/to/script/folder
-pip install yfinance
-pip install lxml
-pip install pandas
-pip install xlrd
-pip install openpyxl
+```
+At last, install the dependencies:
+```
+pip install -r requirements.txt
 ```
 The tool should be able to run by now, by typing the command below:
 ```
 trade -h
 ```
+for a brief usage instruction for the CLI tool.
