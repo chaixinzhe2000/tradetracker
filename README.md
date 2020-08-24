@@ -35,6 +35,6 @@ for a brief usage instruction for the CLI tool.
 
 ### Currently Supported Features
 This tool is still in development stage, and currently we support the following commands:  
-`trade log` is used to log the trade data  
-`trade show` is used to show the summary of your trade (most recent for each ticker)  
-`trade profit` will output your total profit across all trade up-to-date  
+- `trade log` is used to log the trade data  
+- `trade show` is used to show the summary of your trade (most recent for each ticker)  
+- `trade profit` will output your total profit across all trade up-to-date  
