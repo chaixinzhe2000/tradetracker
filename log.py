@@ -72,5 +72,5 @@ def calc_realized_profit(df, ticker_symbol, trade_type, total_shares_holding, pr
         for row in df.iterrows():
             if row[1]['TICKER'] == ticker_symbol:
                 previous_average_buy_cost = row[1]['AVERAGE_PRICE']
-        return (price-previous_average_buy_cost)*quantity
+        return (price - previous_average_buy_cost) * quantity
                 

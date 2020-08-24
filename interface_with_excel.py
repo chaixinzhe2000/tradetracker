@@ -15,7 +15,6 @@ excel_file_name = './trading_data.xlsx'
 
 def get_df():
     df = pd.read_excel(excel_file_name)
-
     numerical_columns = ['PRICE', 'VOLUME', 'NET_EFFECT_TO_CASH', 'TOTAL_SHARES_HOLDING', 'TICKER_TOTAL_VALUE', 'AVERAGE_PRICE', 'REALIZED_PROFIT']
     df[numerical_columns] = df[numerical_columns].apply(pd.to_numeric, errors='coerce')
     return df

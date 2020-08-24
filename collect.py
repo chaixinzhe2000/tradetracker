@@ -16,7 +16,6 @@ def connect(host="https://www.google.com/"):
     except:
         return False
 
-
 # driver function: the new_entry() method will prompt users to enter their trade information,
 # and check whether the input is valid or not by calling helper functions.
 def new_entry():
@@ -49,7 +48,7 @@ def new_entry():
         # printing order summary
         print('----------------------------------------------------------------------------')
         print('You have excecuted the following order: ' + trade_type +
-              ' ' + str(quantity) + ' ' + ticker + ' @ ' + str(price) + ' on ' + date)
+              ' ' + str(quantity) + ' ' + ticker + ' @ ' + "%0.2f" %price + ' on ' + date)
         print('----------------------------------------------------------------------------')
         # confirming trade with user
         entry_confirmation = input("is the information correct? (y/n): ")
@@ -58,7 +57,7 @@ def new_entry():
             print('\nWriting to trading_data.xlsx...')
             log_to_excel(ticker,trade_type,price,quantity,date)
             print('\nOrder "' + trade_type +
-                  ' ' + str(quantity) + ' ' + ticker + ' @ ' + str(price) + ' on ' + date + '" is recorded in trading_data.xlsx')
+                  ' ' + str(quantity) + ' ' + ticker + ' @ ' + "%0.2f" %price + ' on ' + date + '" is recorded in trading_data.xlsx')
             another_trade = input("Do you want to log another trade? (y/n): ")
             if another_trade == 'y' or another_trade == 'Y':
                 print("\nStart logging the next trade...")
@@ -73,6 +72,8 @@ def new_entry():
 
 # when connected to internet, will check ticker validity
 def check_ticker_input(ticker):
+    if ticker == None or ticker == "":
+        ticker = input('Please re-enter a valid stock symbol: ').upper()
     if connect():
         print('Checking ticker validity...     ', end="", flush=True)
         while len(ticker) < 1 or len(ticker) > 10 or check_validity(ticker) is False:
