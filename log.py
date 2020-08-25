@@ -6,11 +6,12 @@ import interface_with_excel as iwe
 
 def log_to_excel(ticker, trade_type, price, quantity, date):
     df = iwe.get_df()
+    helper_df = iwe.get_helper_df()
 
     net_effect = calc_net_effect(trade_type, price, quantity)
-    total_shares_holding = calc_total_shares_holding(df,ticker,trade_type,quantity)
-    ticker_total_value, ticker_average = calc_ticker_values(df,ticker,trade_type,price,quantity,total_shares_holding)
-    realized_profit = calc_realized_profit(df, ticker, trade_type, total_shares_holding, price, quantity)
+    total_shares_holding = calc_total_shares_holding(helper_df,ticker,trade_type,quantity)
+    ticker_total_value, ticker_average = calc_ticker_values(helper_df,ticker,trade_type,price,quantity,total_shares_holding)
+    realized_profit = calc_realized_profit(helper_df, ticker, trade_type, total_shares_holding, price, quantity)
     data = [ticker, date, trade_type, price, \
             quantity, net_effect, total_shares_holding, ticker_total_value, ticker_average, realized_profit]
     data_to_log = pd.DataFrame([data], columns=['TICKER', 'DATE', 'BUY/SELL', 'PRICE', 'VOLUME', \
@@ -21,6 +22,9 @@ def log_to_excel(ticker, trade_type, price, quantity, date):
     ###TRY TO GET ALL COLUMNS INTO 2 DECIMAL PLACES WHEN TALKING ABOUT CURRENCY
     df.to_excel(iwe.excel_file_name, index=False)
     print(df)
+
+    #update dictionary_of_latest_trades
+    iwe.update_to_dict_of_latest_trades_for_each_ticker(data_to_log)
 
 def calc_net_effect(trade_type, price, quantity):
     net_effect = float(np.round(float(price) * float(quantity), 2))
@@ -56,7 +60,6 @@ def calc_ticker_values(df, ticker_symbol, trade_type, price, quantity, total_sha
         return np.round(price * quantity, 2), price
     else:
         # need to add a SHORT version, and check validity
-        print(previous_average)
         if trade_type == 'BUY':
             current_value = previous_value + price * quantity
             current_average = np.round(current_value / total_share_quantity, 2)

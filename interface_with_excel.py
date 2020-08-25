@@ -10,13 +10,59 @@
 
 import pandas as pd
 import numpy as np
+import pickle
+import os
 
 excel_file_name = './trading_data.xlsx'
+excel_helper_file_name = './data_helper.xlsx'
 
 def get_df():
     df = pd.read_excel(excel_file_name)
-
     numerical_columns = ['PRICE', 'VOLUME', 'NET_EFFECT_TO_CASH', 'TOTAL_SHARES_HOLDING', 'TICKER_TOTAL_VALUE', 'AVERAGE_PRICE', 'REALIZED_PROFIT']
     df[numerical_columns] = df[numerical_columns].apply(pd.to_numeric, errors='coerce')
     return df
-    
+
+### Method using dictionary
+# def update_to_dict_of_latest_trades_for_each_ticker(data_row):
+#     dictionary_file_path = './dict_of_latest_trades_for_each_ticker.pickle'
+#     dictionary_file_name = 'dict_of_latest_trades_for_each_ticker.pickle'
+#     if os.path.getsize(dictionary_file_path) > 0:
+#         dictionary = pickle.load(open(dictionary_file_name,"rb"))
+#         if data_row['TOTAL_SHARES_HOLDING'] == 0:
+#             dictionary.pop(data_row['TICKER'],None)
+#         else:
+#             dictionary[data_row['TICKER']] = data_row
+#     else: 
+#         dictionary = {data_row['TICKER']:data_row}
+#     pickle.dump(dictionary,open(dictionary_file_name,'wb'))
+
+### Method using second excel file (data_helper.xlsx)
+def update_to_dict_of_latest_trades_for_each_ticker(data_row):
+    df = get_helper_df()
+    numerical_columns = ['PRICE', 'VOLUME', 'NET_EFFECT_TO_CASH', 'TOTAL_SHARES_HOLDING', 'TICKER_TOTAL_VALUE', 'AVERAGE_PRICE', 'REALIZED_PROFIT']
+    df[numerical_columns] = df[numerical_columns].apply(pd.to_numeric, errors='coerce')
+    data_row[numerical_columns] = data_row[numerical_columns].apply(pd.to_numeric, errors='coerce')
+
+    found_ticker_flag = False
+    for i, row in df.iterrows():
+        if row['TICKER'] == data_row.loc[0]['TICKER']:
+            if data_row.loc[0]['TOTAL_SHARES_HOLDING'] == 0:
+                df = df.drop(i)
+            else: 
+                df.iloc[i] = data_row.iloc[0]
+            new_df = df
+            found_ticker_flag = True
+            break
+
+    if df.empty or found_ticker_flag == False:
+        if (data_row.loc[0]['TOTAL_SHARES_HOLDING'] != 0):
+            new_df = pd.concat([df,data_row])
+
+    ###TRY TO GET ALL COLUMNS INTO 2 DECIMAL PLACES WHEN TALKING ABOUT CURRENCY
+    new_df.to_excel(excel_helper_file_name, index=False)
+
+def get_helper_df():
+    df = pd.read_excel(excel_helper_file_name)
+    numerical_columns = ['PRICE', 'VOLUME', 'NET_EFFECT_TO_CASH', 'TOTAL_SHARES_HOLDING', 'TICKER_TOTAL_VALUE', 'AVERAGE_PRICE', 'REALIZED_PROFIT']
+    df[numerical_columns] = df[numerical_columns].apply(pd.to_numeric, errors='coerce')
+    return df
