@@ -46,10 +46,7 @@ def update_to_dict_of_latest_trades_for_each_ticker(data_row):
     found_ticker_flag = False
     for i, row in df.iterrows():
         if row['TICKER'] == data_row.loc[0]['TICKER']:
-            if data_row.loc[0]['TOTAL_SHARES_HOLDING'] == 0:
-                df = df.drop(i)
-            else: 
-                df.iloc[i] = data_row.iloc[0]
+            df.iloc[i] = data_row.iloc[0]
             new_df = df
             found_ticker_flag = True
             break
