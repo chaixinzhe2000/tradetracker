@@ -4,6 +4,7 @@ import pandas as pd
 from argparse import RawDescriptionHelpFormatter
 from collect import new_entry
 from show import show_trades
+from profit import profit
 
 def main():
     # description of the command-line interface
@@ -29,7 +30,7 @@ Available commands include:\n\
     if arg_command == 'log':
         new_entry()
     elif arg_command == 'profit':
-        print('profit feature awaiting implementation')
+        profit()
     elif arg_command == 'show':
         show_trades()
 
