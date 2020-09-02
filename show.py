@@ -18,3 +18,17 @@ def show_trades():
     new_df_to_print = pd.DataFrame(dict_of_trades.values(), columns=['TICKER', 'DATE', 'BUY/SELL', 'PRICE', 'VOLUME', \
                                                 'NET_EFFECT_TO_CASH', 'TOTAL_SHARES_HOLDING', 'TICKER_TOTAL_VALUE', 'AVERAGE_PRICE', 'REALIZED_PROFIT'])
     print(new_df_to_print)
+
+def show_trade_for_ticker(ticker):
+    #this function prints the total trade history of one particular ticker
+    df = iwe.get_df()
+    #go through the whole df and find all trades with that ticker
+    data_to_print = []
+    for row in df.iterrows():
+        if row[1]['TICKER'] == ticker:
+            data_to_print.append(row[1])
+
+    print(data_to_print)
+    df_to_print = pd.DataFrame(data_to_print,columns=['TICKER', 'DATE', 'BUY/SELL', 'PRICE', 'VOLUME', \
+                                                'NET_EFFECT_TO_CASH', 'TOTAL_SHARES_HOLDING', 'TICKER_TOTAL_VALUE', 'AVERAGE_PRICE', 'REALIZED_PROFIT'])
+    print(df_to_print)
