@@ -1,0 +1,5 @@
+yfinance
+lxml
+pandas
+xlrd
+openpyxl

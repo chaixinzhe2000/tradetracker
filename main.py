@@ -10,10 +10,7 @@ def main():
     # description of the command-line interface
     description = '\
 This is a command-line interface (CLI) tool that helps you track your most recent stock trades.\n\
-Copyright (c) 2020 Xinzhe Chai & Jinoo Hong\n\n\
-Available commands include:\n\
-  new       Enter new trade data\n\
-  profit    Check profit for individual ticker'
+Copyright (c) 2020 Xinzhe Chai & Jinoo Hong\n'
 
     # getting current date
     curr_date = datetime.datetime.now().strftime("%x")
@@ -39,7 +36,6 @@ Available commands include:\n\
            if check_ticker_input(args.ticker.upper()):
                show.show_trade_for_ticker(args.ticker.upper())
         
-
 # modified version of check_ticker_input from collect.py. I feel like we should have a input validity file that has all the input checking there (input checking 
 # shouldnt be in collect.py cus we needa check input for other things as well)
 def check_ticker_input(ticker):
