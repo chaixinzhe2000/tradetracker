@@ -47,7 +47,7 @@ def check_ticker_input(ticker):
     else:
         if len(ticker) < 1 or len(ticker) > 10:
             print('INVALID TICKER INPUT. trade show ' + ticker + ' command FAILED', end="", flush=True)
-            return False    
+            return False
     return True
 
 if __name__ == "__main__":

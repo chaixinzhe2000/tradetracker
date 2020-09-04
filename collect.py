@@ -2,6 +2,7 @@ import yfinance as yf
 import datetime
 import urllib.request
 from log import log_to_excel
+import interface_with_excel as iwe
 
 # TODO: make sure rounding is exact
 
@@ -28,18 +29,21 @@ def new_entry():
         ticker = input(
             'Enter stock symbol of your trade: ').upper() or ticker
         ticker = check_ticker_input(ticker)
+        # get current_holding (current shares holding) to validify sell amount
+        latest_trade = iwe.get_latest_trade(ticker)
+        current_holding = -1 if latest_trade is None else latest_trade['TOTAL_SHARES_HOLDING']
         # collecting trade type (buy or sell)
         trade_type = input(
             'Enter type of trade ("buy" or "sell"): ').upper() or trade_type
-        trade_type = check_type_input(trade_type)
+        trade_type = check_type_input(trade_type, current_holding)
         # collecting trade price information
         price = input(
             'Enter execution price of the trade, in dollars: ') or price
         price = check_price_input(price)
         # collecting trade quantity
         quantity = input(
-            'Enter the quantity of the trade, in shares: ') or quantity
-        quantity = check_quantity_input(quantity)
+            'Enter the quantity of the trade, in shares (type "all" for sell all): ') or quantity
+        quantity = check_quantity_input(quantity, trade_type, current_holding)
         # collecting trade date
         date = input(
             "Enter the date of trade in MM/DD/YY format, press ENTER to use current date: ") or date
@@ -101,9 +105,9 @@ def check_validity(ticker):
     return ticker_validity
 
 # type checking the trade type
-def check_type_input(trade_type):
-    while (trade_type != 'BUY') and (trade_type != 'SELL'):
-        trade_type = input('Please re-enter type of the trade, using "buy" or "sell": ').upper()
+def check_type_input(trade_type, current_holding):
+    while (trade_type != 'BUY') and (trade_type != 'SELL') or (trade_type == 'SELL' and current_holding <= 0):
+        trade_type = input('Please re-enter type of the trade, using "buy" or "sell" (you may be trying to sell a stock that you don\'t own yet): ').upper()
     return trade_type
 
 # checking whether price is valid, and round it to 2 decimal places
@@ -116,12 +120,15 @@ def check_price_input(number):
     return number
 
 # checking whether quantity is valid, and round it to 2 decimal places
-def check_quantity_input(number):
-    while check_float(number) is False:
+def check_quantity_input(quantity, trade_type, current_holding):
+    if quantity.upper() == 'ALL' and trade_type == 'SELL':
+        return current_holding
+    while (check_float(quantity) is False) or (trade_type == 'SELL' and current_holding < float(quantity)):
+        if quantity.upper() == 'ALL' and trade_type == 'SELL':
+            return current_holding
         quantity = input(
-            'Please re-enter a valid quantity of the trade, in shares: ')
-        number = quantity
-    return float(number)
+            'Please re-enter a valid quantity of the trade, in shares (type "all" for sell all): ')
+    return float(quantity)
 
 # checking whether date follows the format
 def check_date(date):

@@ -63,3 +63,10 @@ def get_helper_df():
     numerical_columns = ['PRICE', 'VOLUME', 'NET_EFFECT_TO_CASH', 'TOTAL_SHARES_HOLDING', 'TICKER_TOTAL_VALUE', 'AVERAGE_PRICE', 'REALIZED_PROFIT']
     df[numerical_columns] = df[numerical_columns].apply(pd.to_numeric, errors='coerce')
     return df
+
+def get_latest_trade(ticker):
+    df = get_helper_df()
+    for i, row in df.iterrows():
+        if row['TICKER'] == ticker:
+            return row
+    return None
